@@ -19,5 +19,10 @@ namespace PortalEmpleoDB
         public string? Contraseña { get; set; }
 
         public virtual ICollection<OfertaDeEmpleo> OfertaDeEmpleos { get; set; }
+
+        public Usuario()
+        {
+            OfertaDeEmpleos = new List<OfertaDeEmpleo>();
+        }
     }
 }
