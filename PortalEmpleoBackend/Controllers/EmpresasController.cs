@@ -94,14 +94,10 @@ namespace PortalEmpleoBackend.Controllers
             return Ok(new { message = "Empresa creada satisfactoriamente" });
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Empresa>> UpdateEmpresa(int id, [FromBody] Empresa empresa)
+        //PATCH: /Empresas/id
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Empresa>> UpdateEmpresa(int id, [FromBody] Dictionary<string, string> empresaUpdates)
         {
-            if (id != empresa.EmpresaId)
-            {
-                empresa.EmpresaId = id; // Establecer el ID desde la URL en el objeto Empresa
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -115,8 +111,31 @@ namespace PortalEmpleoBackend.Controllers
                     return NotFound();
                 }
 
-                _context.Entry(existingEmpresa).CurrentValues.SetValues(empresa);
+                _context.Attach(existingEmpresa);
+
+                foreach (var update in empresaUpdates)
+                {
+                    switch (update.Key.ToLower())
+                    {
+                        case "nombre":
+                            existingEmpresa.Nombre = update.Value;
+                            break;
+                        case "descripcion":
+                            existingEmpresa.Descripcion = update.Value;
+                            break;
+                        case "tamaño":
+                            existingEmpresa.Tamaño = update.Value;
+                            break;
+                        case "sector":
+                            existingEmpresa.Sector = update.Value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 await _context.SaveChangesAsync();
+
             }
             catch (Exception ex)
             {
@@ -126,6 +145,7 @@ namespace PortalEmpleoBackend.Controllers
             return Ok(new { message = "Los datos de la empresa han sido actualizados correctamente" });
         }
 
+        //DELETE: /Empresas/id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmpresa(int id)
         {

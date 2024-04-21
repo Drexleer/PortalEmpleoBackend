@@ -118,6 +118,5 @@ namespace PortalEmpleoBackend.Controllers
 
             return Ok(new { message = $"El usuario {usuario.Nombre} a sido eliminada correctamente" });
         }
-
     }
 }

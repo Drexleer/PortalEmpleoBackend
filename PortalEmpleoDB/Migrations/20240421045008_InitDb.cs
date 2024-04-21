@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PortalEmpleoDB.Migrations
 {
     /// <inheritdoc />
-    public partial class Database : Migration
+    public partial class InitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -67,45 +67,53 @@ namespace PortalEmpleoDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfertaDeEmpleoUsuario",
+                name: "Postulaciones",
                 columns: table => new
                 {
-                    OfertaDeEmpleosOfertaId = table.Column<int>(type: "int", nullable: false),
-                    UsuariosPostuladosUsuarioId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OfertaDeEmpleoID = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    ArchivoCV = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OfertaDeEmpleoUsuario", x => new { x.OfertaDeEmpleosOfertaId, x.UsuariosPostuladosUsuarioId });
+                    table.PrimaryKey("PK_Postulaciones", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfertaDeEmpleoUsuario_OfertasDeEmpleo_OfertaDeEmpleosOfertaId",
-                        column: x => x.OfertaDeEmpleosOfertaId,
+                        name: "FK_Postulaciones_OfertasDeEmpleo_OfertaDeEmpleoID",
+                        column: x => x.OfertaDeEmpleoID,
                         principalTable: "OfertasDeEmpleo",
                         principalColumn: "OfertaId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OfertaDeEmpleoUsuario_Usuarios_UsuariosPostuladosUsuarioId",
-                        column: x => x.UsuariosPostuladosUsuarioId,
+                        name: "FK_Postulaciones_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "UsuarioId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfertaDeEmpleoUsuario_UsuariosPostuladosUsuarioId",
-                table: "OfertaDeEmpleoUsuario",
-                column: "UsuariosPostuladosUsuarioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OfertasDeEmpleo_EmpresaId",
                 table: "OfertasDeEmpleo",
                 column: "EmpresaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Postulaciones_OfertaDeEmpleoID",
+                table: "Postulaciones",
+                column: "OfertaDeEmpleoID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Postulaciones_UsuarioId",
+                table: "Postulaciones",
+                column: "UsuarioId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OfertaDeEmpleoUsuario");
+                name: "Postulaciones");
 
             migrationBuilder.DropTable(
                 name: "OfertasDeEmpleo");

@@ -20,10 +20,11 @@ namespace PortalEmpleoBackend.Controllers
 
         // GET: /Ofertas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetOfertasDeEmpleo()
+        public async Task<ActionResult<IEnumerable<object>>> GetOfertas()
         {
-            var ofertasDeEmpleo = await _context.OfertasDeEmpleo
-                .Include(o => o.Empresa)
+            var ofertasConPostulaciones = await _context.OfertasDeEmpleo
+                .Include(o => o.Postulaciones)
+                .ThenInclude(p => p.Usuario)
                 .Select(o => new
                 {
                     o.OfertaId,
@@ -32,11 +33,19 @@ namespace PortalEmpleoBackend.Controllers
                     o.Salario,
                     o.FechaDePublicacion,
                     EmpresaId = o.Empresa.EmpresaId,
-                    EmpresaNombre = o.Empresa.Nombre
+                    EmpresaNombre = o.Empresa.Nombre,
+                    Postulaciones = o.Postulaciones.Select(p => new
+                    {
+                        p.Id,
+                        p.UsuarioId,
+                        p.Usuario.Nombre,
+                        p.Usuario.Correo,
+                        p.ArchivoCV
+                    })
                 })
                 .ToListAsync();
 
-            return Ok(ofertasDeEmpleo);
+            return Ok(ofertasConPostulaciones);
         }
 
         //GET: /Ofertas/id
@@ -65,6 +74,28 @@ namespace PortalEmpleoBackend.Controllers
             };
 
             return Ok(result);
+        }
+
+        //GET: /Ofertas/buscar?q=Ejemplo
+        [HttpGet("buscar")]
+        public async Task<ActionResult<IEnumerable<object>>> BuscarOfertasDeEmpleo([FromQuery] string q)
+        {
+            var ofertasDeEmpleo = await _context.OfertasDeEmpleo
+                .Include(o => o.Empresa)
+                .Where(o => EF.Functions.Like(o.Nombre, $"%{q}%") || EF.Functions.Like(o.Descripcion, $"%{q}%"))
+                .Select(o =>  new
+                 {
+                    o.OfertaId,
+                    o.Nombre,
+                    o.Descripcion,
+                    o.Salario,
+                    o.FechaDePublicacion,
+                    EmpresaId = o.Empresa.EmpresaId,
+                    EmpresaNombre = o.Empresa.Nombre
+                 })
+                .ToListAsync();
+
+            return Ok(ofertasDeEmpleo);
         }
 
         // POST: /Ofertas

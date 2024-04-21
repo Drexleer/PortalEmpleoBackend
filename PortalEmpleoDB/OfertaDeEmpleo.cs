@@ -20,6 +20,6 @@ namespace PortalEmpleoDB
         public int EmpresaId { get; set; }
         public virtual Empresa? Empresa { get; set; }
 
-        public virtual ICollection<Usuario>? UsuariosPostulados { get; set; }
+        public ICollection<Postulacion>? Postulaciones { get; set; }
     }
 }
