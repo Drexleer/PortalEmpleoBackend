@@ -52,7 +52,7 @@ namespace PortalEmpleoBackend.Controllers
             return Ok(new {message = "Usuario Creado Correctamente"});
         }
 
-        //PUT: /Usuarios/id
+        //PATCH: /Usuarios/id
         [HttpPatch("{id}")]
         public async Task<ActionResult<Usuario>> UpdateUsuario(int id, [FromBody] Dictionary<string, string> usuarioUpdates)
         {

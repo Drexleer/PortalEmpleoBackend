@@ -20,25 +20,66 @@ namespace PortalEmpleoBackend.Controllers
 
         // GET: api/Empresas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Empresa>>> GetEmpresas()
+        public async Task<ActionResult<IEnumerable<object>>> GetEmpresas()
         {
-            return await _context.Empresas.ToListAsync();
+            var empresas = await _context.Empresas
+                .Include(e => e.OfertasDeEmpleo)
+                .Select(e => new
+                {
+                    e.EmpresaId,
+                    e.Nombre,
+                    e.Descripcion,
+                    e.Tamaño,
+                    e.Sector,
+                    OfertasDeEmpleo = e.OfertasDeEmpleo.Select(o => new
+                    {
+                        o.OfertaId,
+                        o.Nombre,
+                        o.Descripcion,
+                        o.Salario,
+                        o.FechaDePublicacion
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return Ok(empresas);
         }
 
-        // GET: api/Empresas/id
+        // GET: /Empresas/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Empresa>> GetEmpresa(int id)
+        public async Task<ActionResult<object>> GetEmpresa(int id)
         {
-            var empresa = await _context.Empresas.FindAsync(id);
+            var empresa = await _context.Empresas
+                .Include(e => e.OfertasDeEmpleo) // Incluir las ofertas de empleo de la empresa
+                .FirstOrDefaultAsync(e => e.EmpresaId == id);
 
             if (empresa == null)
             {
                 return NotFound();
             }
-            return empresa;
+
+            // Proyectar los datos deseados en un nuevo objeto anónimo
+            var result = new
+            {
+                empresa.EmpresaId,
+                empresa.Nombre,
+                empresa.Descripcion,
+                empresa.Tamaño,
+                empresa.Sector,
+                OfertasDeEmpleo = empresa.OfertasDeEmpleo.Select(o => new
+                {
+                    o.OfertaId,
+                    o.Nombre,
+                    o.Descripcion,
+                    o.Salario,
+                    o.FechaDePublicacion
+                })
+            };
+
+            return Ok(result);
         }
 
-        // POST: api/Empresas
+        // POST: /Empresas
         [HttpPost]
         public async Task<ActionResult<Empresa>> CreateEmpresa([Bind("Nombre, Descripcion, Tamaño, Sector")] Empresa empresa)
         {
@@ -47,7 +88,7 @@ namespace PortalEmpleoBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Add(empresa);
+            _context.Empresas.Add(empresa);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Empresa creada satisfactoriamente" });

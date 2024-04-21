@@ -12,8 +12,8 @@ using PortalEmpleoDB;
 namespace PortalEmpleoDB.Migrations
 {
     [DbContext(typeof(PortalEmpleoDbContext))]
-    [Migration("20240420015340_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240421005905_Database")]
+    partial class Database
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -18,11 +18,6 @@ namespace PortalEmpleoDB
         public string? Telefono { get; set; }
         public string? Contraseña { get; set; }
 
-        public virtual ICollection<OfertaDeEmpleo> OfertaDeEmpleos { get; set; }
-
-        public Usuario()
-        {
-            OfertaDeEmpleos = new List<OfertaDeEmpleo>();
-        }
+        public virtual ICollection<OfertaDeEmpleo>? OfertaDeEmpleos { get; set; }
     }
 }

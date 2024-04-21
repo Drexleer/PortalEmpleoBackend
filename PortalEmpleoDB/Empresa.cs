@@ -18,11 +18,6 @@ namespace PortalEmpleoDB
         public string? Tamaño { get; set; }
         public string? Sector { get; set; }
 
-        public virtual ICollection<OfertaDeEmpleo> OfertasDeEmpleo { get; set; }
-
-        public Empresa()
-        {
-            OfertasDeEmpleo = new List<OfertaDeEmpleo>();
-        }
+        public virtual ICollection<OfertaDeEmpleo>? OfertasDeEmpleo { get; set; }
     }
 }
