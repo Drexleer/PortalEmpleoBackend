@@ -16,12 +16,10 @@ namespace PortalEmpleoDB
         public string? Nombre { get; set; }
         public string? Descripcion { get; set; }
         public decimal Salario { get; set; }
-        public DateTime FechaDePublicacion { get; set; }
+        public DateTime FechaDePublicacion { get; set; } = DateTime.Now;
         public int EmpresaId { get; set; }
-
-        [ForeignKey("EmpresaId")]
         public virtual Empresa? Empresa { get; set; }
 
-        public virtual ICollection<Usuario>? UsuariosPostulados { get; set; }
+        public ICollection<Postulacion>? Postulaciones { get; set; }
     }
 }

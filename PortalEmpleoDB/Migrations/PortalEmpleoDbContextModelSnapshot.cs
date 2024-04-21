@@ -22,21 +22,6 @@ namespace PortalEmpleoDB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("OfertaDeEmpleoUsuario", b =>
-                {
-                    b.Property<int>("OfertaDeEmpleosOfertaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuariosPostuladosUsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OfertaDeEmpleosOfertaId", "UsuariosPostuladosUsuarioId");
-
-                    b.HasIndex("UsuariosPostuladosUsuarioId");
-
-                    b.ToTable("OfertaDeEmpleoUsuario");
-                });
-
             modelBuilder.Entity("PortalEmpleoDB.Empresa", b =>
                 {
                     b.Property<int>("EmpresaId")
@@ -92,6 +77,33 @@ namespace PortalEmpleoDB.Migrations
                     b.ToTable("OfertasDeEmpleo");
                 });
 
+            modelBuilder.Entity("PortalEmpleoDB.Postulacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ArchivoCV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OfertaDeEmpleoID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfertaDeEmpleoID");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Postulaciones");
+                });
+
             modelBuilder.Entity("PortalEmpleoDB.Usuario", b =>
                 {
                     b.Property<int>("UsuarioId")
@@ -117,21 +129,6 @@ namespace PortalEmpleoDB.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("OfertaDeEmpleoUsuario", b =>
-                {
-                    b.HasOne("PortalEmpleoDB.OfertaDeEmpleo", null)
-                        .WithMany()
-                        .HasForeignKey("OfertaDeEmpleosOfertaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PortalEmpleoDB.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("UsuariosPostuladosUsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PortalEmpleoDB.OfertaDeEmpleo", b =>
                 {
                     b.HasOne("PortalEmpleoDB.Empresa", "Empresa")
@@ -143,9 +140,38 @@ namespace PortalEmpleoDB.Migrations
                     b.Navigation("Empresa");
                 });
 
+            modelBuilder.Entity("PortalEmpleoDB.Postulacion", b =>
+                {
+                    b.HasOne("PortalEmpleoDB.OfertaDeEmpleo", "OfertaDeEmpleo")
+                        .WithMany("Postulaciones")
+                        .HasForeignKey("OfertaDeEmpleoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PortalEmpleoDB.Usuario", "Usuario")
+                        .WithMany("Postulaciones")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OfertaDeEmpleo");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("PortalEmpleoDB.Empresa", b =>
                 {
                     b.Navigation("OfertasDeEmpleo");
+                });
+
+            modelBuilder.Entity("PortalEmpleoDB.OfertaDeEmpleo", b =>
+                {
+                    b.Navigation("Postulaciones");
+                });
+
+            modelBuilder.Entity("PortalEmpleoDB.Usuario", b =>
+                {
+                    b.Navigation("Postulaciones");
                 });
 #pragma warning restore 612, 618
         }
