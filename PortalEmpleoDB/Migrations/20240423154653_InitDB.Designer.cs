@@ -12,8 +12,8 @@ using PortalEmpleoDB;
 namespace PortalEmpleoDB.Migrations
 {
     [DbContext(typeof(PortalEmpleoDbContext))]
-    [Migration("20240421045008_InitDb")]
-    partial class InitDb
+    [Migration("20240423154653_InitDB")]
+    partial class InitDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,12 @@ namespace PortalEmpleoDB.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpresaId"));
+
+                    b.Property<string>("Contraseña")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Correo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
