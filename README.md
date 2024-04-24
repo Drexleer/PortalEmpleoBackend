@@ -27,5 +27,7 @@ Este documento describe el funcionamiento y las características del backend de 
 4. En la consola de administrador de paquetes nuget ejecuta los siguientes comandos:
 
 4.1: Antes de ejecutarlo verifica que en la consola como proyecto prederminado: PortalEmpleoDB
+
 4.2: Add-Migration "CualquierNombre"
+
 4.3: Update-Database
