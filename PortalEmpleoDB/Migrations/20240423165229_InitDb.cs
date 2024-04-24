@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PortalEmpleoDB.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDB : Migration
+    public partial class InitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,8 @@ namespace PortalEmpleoDB.Migrations
                     Tamaño = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Sector = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Correo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tipo = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,7 +39,8 @@ namespace PortalEmpleoDB.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Correo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tipo = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

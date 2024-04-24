@@ -17,6 +17,8 @@ namespace PortalEmpleoDB
         public string? Correo { get; set; }
         public string? Telefono { get; set; }
         public string? Contraseña { get; set; }
+        public int? Tipo { get; set; }
+
 
         public ICollection<Postulacion>? Postulaciones { get; set; }
     }

@@ -12,8 +12,8 @@ using PortalEmpleoDB;
 namespace PortalEmpleoDB.Migrations
 {
     [DbContext(typeof(PortalEmpleoDbContext))]
-    [Migration("20240423154653_InitDB")]
-    partial class InitDB
+    [Migration("20240423165229_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,9 @@ namespace PortalEmpleoDB.Migrations
 
                     b.Property<string>("Tamaño")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("EmpresaId");
 
@@ -132,6 +135,9 @@ namespace PortalEmpleoDB.Migrations
 
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("UsuarioId");
 

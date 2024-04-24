@@ -12,6 +12,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PortalEmpleoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.SetIsOriginAllowed(origin => true) // Permite todos los orígenes
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -35,6 +46,8 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors();
 
 app.UseAuthorization();
 

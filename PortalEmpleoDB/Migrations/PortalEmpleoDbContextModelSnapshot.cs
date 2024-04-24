@@ -48,6 +48,9 @@ namespace PortalEmpleoDB.Migrations
                     b.Property<string>("Tamaño")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Tipo")
+                        .HasColumnType("int");
+
                     b.HasKey("EmpresaId");
 
                     b.ToTable("Empresas");
@@ -129,6 +132,9 @@ namespace PortalEmpleoDB.Migrations
 
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("UsuarioId");
 
