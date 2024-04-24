@@ -5,6 +5,13 @@ using PortalEmpleoDB;
 
 namespace PortalEmpleoBackend.Controllers
 {
+    public class UsuarioResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public Usuario Usuario { get; set; }
+    }
+
     [Route("/[Controller]")]
     [ApiController]
     public class UsuariosController : Controller
@@ -39,17 +46,24 @@ namespace PortalEmpleoBackend.Controllers
 
         //POST: /Usuarios
         [HttpPost]
-        public async Task<ActionResult<Usuario>> CreateUsuario([Bind("Nombre,Correo,Telefono,Contraseña")] Usuario usuario)
+        public async Task<ActionResult<UsuarioResponse>> CreateUsuario([Bind("Nombre,Correo,Telefono,Contraseña,Tipo")] Usuario usuario)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Ok(new UsuarioResponse { Success = false, Message = "No se pudo registrar el usuario" });
             }
 
-            _context.Add(usuario);
+            // Verificar si ya existe un usuario con el mismo correo electrónico
+            var existingUsuario = await _context.Usuarios.FirstOrDefaultAsync(e => e.Correo == usuario.Correo);
+            if (existingUsuario != null)
+            {
+                return Ok(new UsuarioResponse { Success = false, Message = "Ya existe un usuario con ese correo electrónico" });
+            }
+
+            _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
-            return Ok(new {message = "Usuario Creado Correctamente"});
+            return Ok(new UsuarioResponse { Success = true, Message = "Registro Exitoso", Usuario = usuario });
         }
 
         //PATCH: /Usuarios/id

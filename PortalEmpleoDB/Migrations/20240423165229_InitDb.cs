@@ -20,7 +20,10 @@ namespace PortalEmpleoDB.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Tamaño = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Sector = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Sector = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tipo = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,7 +39,8 @@ namespace PortalEmpleoDB.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Correo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tipo = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

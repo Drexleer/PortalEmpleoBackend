@@ -6,6 +6,12 @@ using System.Data;
 
 namespace PortalEmpleoBackend.Controllers
 {
+    public class EmpresasResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+    }
+
     [Route("/[controller]")]
     [ApiController]
     public class EmpresasController : Controller
@@ -81,17 +87,24 @@ namespace PortalEmpleoBackend.Controllers
 
         // POST: /Empresas
         [HttpPost]
-        public async Task<ActionResult<Empresa>> CreateEmpresa([Bind("Nombre, Descripcion, Tamaño, Sector")] Empresa empresa)
+        public async Task<ActionResult<Empresa>> CreateEmpresa([Bind("Nombre, Descripcion, Tamaño, Sector, Tipo, Correo")] Empresa empresa)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Ok(new EmpresasResponse { Success = true, Message = "No se pudo registrar la Empresa" });
+            }
+
+            // Verificar si ya existe una empresa con el mismo correo electrónico
+            var existingEmpresa = await _context.Empresas.FirstOrDefaultAsync(e => e.Correo == empresa.Correo);
+            if (existingEmpresa != null)
+            {
+                return Ok(new EmpresasResponse { Success = false, Message = "Ya existe una empresa con ese correo electrónico" });
             }
 
             _context.Empresas.Add(empresa);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Empresa creada satisfactoriamente" });
+            return Ok(new EmpresasResponse { Success = true, Message = "Registro Exitoso" });
         }
 
         //PATCH: /Empresas/id

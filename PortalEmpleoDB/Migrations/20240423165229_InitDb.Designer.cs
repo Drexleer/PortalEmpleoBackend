@@ -12,7 +12,7 @@ using PortalEmpleoDB;
 namespace PortalEmpleoDB.Migrations
 {
     [DbContext(typeof(PortalEmpleoDbContext))]
-    [Migration("20240421045008_InitDb")]
+    [Migration("20240423165229_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -33,6 +33,12 @@ namespace PortalEmpleoDB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpresaId"));
 
+                    b.Property<string>("Contraseña")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Correo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
@@ -44,6 +50,9 @@ namespace PortalEmpleoDB.Migrations
 
                     b.Property<string>("Tamaño")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("EmpresaId");
 
@@ -126,6 +135,9 @@ namespace PortalEmpleoDB.Migrations
 
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("UsuarioId");
 

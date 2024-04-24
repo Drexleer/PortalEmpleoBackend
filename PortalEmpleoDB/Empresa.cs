@@ -17,6 +17,9 @@ namespace PortalEmpleoDB
         public string? Descripcion { get; set; }
         public string? Tamaño { get; set; }
         public string? Sector { get; set; }
+        public string? Correo { get; set; }
+        public string? Contraseña { get; set; }
+        public int? Tipo { get; set; }
 
         public virtual ICollection<OfertaDeEmpleo>? OfertasDeEmpleo { get; set; }
     }
